@@ -1,0 +1,33 @@
+---
+- name: Install NGINX on all servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update APT package index (Debian/Ubuntu)
+      ansible.builtin.apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install NGINX (Debian/Ubuntu)
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure EPEL repository is enabled (RedHat/CentOS)
+      ansible.builtin.yum:
+        name: epel-release
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install NGINX (RedHat/CentOS)
+      ansible.builtin.yum:
+        name: nginx
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Enable and start NGINX service
+      ansible.builtin.service:
+        name: nginx
+        enabled: yes
+        state: started
