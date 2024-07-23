@@ -13,7 +13,7 @@
       command: >
         dpkg -i /tmp/wazuh-agent_4.8.0-1_amd64.deb
       environment:
-        WAZUH_MANAGER: '192.168.30.194'
+        WAZUH_MANAGER: '192.168.30.193'
         WAZUH_AGENT_GROUP: 'default'
 
     - name: Reload systemd manager configuration
