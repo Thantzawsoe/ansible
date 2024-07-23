@@ -6,7 +6,7 @@
   tasks:
     - name: Download the Wazuh agent installation script from GitHub
       get_url:
-        url: https://raw.githubusercontent.com/your_github_username/your_repository_name/main/install_wazuh_agent.sh
+        url: https://github.com/Thantzawsoe/ansible/blob/main/install_wazuh_agent.sh
         dest: /tmp/install_wazuh_agent.sh
         mode: '0755'
 
