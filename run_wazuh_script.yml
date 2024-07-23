@@ -18,3 +18,5 @@
 
     - name: Run the Wazuh agent installation script
       command: /tmp/install_wazuh_agent.sh
+      environment:
+        WAZUH_MANAGER: '192.168.30.194'
