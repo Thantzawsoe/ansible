@@ -1,0 +1,14 @@
+---
+- name: Run Wazuh Agent Installation Script
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Copy the script to the remote host
+      copy:
+        src: install_wazuh_agent.sh
+        dest: /tmp/install_wazuh_agent.sh
+        mode: '0755'
+
+    - name: Run the Wazuh agent installation script
+      script: /tmp/install_wazuh_agent.sh
