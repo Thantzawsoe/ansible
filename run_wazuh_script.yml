@@ -1,22 +1,35 @@
 ---
-- name: Run Wazuh Agent Installation Script
+- name: Install and configure Wazuh Agent
   hosts: all
   become: yes
 
   tasks:
-    - name: Download the Wazuh agent installation script from GitHub
+    - name: Download the Wazuh agent package
       get_url:
-        url: https://raw.githubusercontent.com/Thantzawsoe/ansible/576f03cfc92150f2f43382db36b4839e61314e69/install_wazuh_agent.sh
-        dest: /tmp/install_wazuh_agent.sh
-        mode: '0755'
+        url: https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.8.0-1_amd64.deb
+        dest: /tmp/wazuh-agent_4.8.0-1_amd64.deb
 
-    - name: Ensure the Wazuh agent installation script is executable
-      file:
-        path: /tmp/install_wazuh_agent.sh
-        mode: '0755'
-        state: file
-
-    - name: Run the Wazuh agent installation script
-      command: /tmp/install_wazuh_agent.sh
+    - name: Install the Wazuh agent package
+      command: >
+        dpkg -i /tmp/wazuh-agent_4.8.0-1_amd64.deb
       environment:
         WAZUH_MANAGER: '192.168.30.194'
+
+    - name: Reload systemd manager configuration
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable the Wazuh agent service
+      systemd:
+        name: wazuh-agent
+        enabled: yes
+
+    - name: Start the Wazuh agent service
+      systemd:
+        name: wazuh-agent
+        state: started
+
+    - name: Clean up the Wazuh agent package
+      file:
+        path: /tmp/wazuh-agent_4.8.0-1_amd64.deb
+        state: absent
